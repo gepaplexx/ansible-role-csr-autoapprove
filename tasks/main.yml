@@ -1,0 +1,64 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    name:
+      - python3-pip
+    state: present
+    update_cache: true
+    cache_valid_time: "{{ csr_autoapprove_cache_valid_time }}"
+  tags:
+    - csr_autoapprove
+    - csr_autoapprove.dependencies
+
+- name: Install ansible dependencies
+  ansible.builtin.pip:
+    name:
+      - kubernetes
+      - openshift
+      - pyyaml
+  tags:
+    - csr_autoapprove
+    - csr_autoapprove.dependencies
+
+- name: Add helm key to apt
+  ansible.builtin.apt_key:
+    url: https://baltocdn.com/helm/signing.asc
+    state: present
+  notify: Update apt
+  tags:
+    - csr_autoapprove
+    - csr_autoapprove.dependencies
+
+- name: Add helm repo to apt
+  ansible.builtin.apt_repository:
+    repo: deb https://baltocdn.com/helm/stable/debian/ all main
+    state: present
+  notify: Update apt
+  tags:
+    - csr_autoapprove
+    - csr_autoapprove.dependencies
+
+- name: Force all notified handlers to run
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - always
+
+- name: Install helm
+  ansible.builtin.apt:
+    name:
+      - helm
+    state: present
+  tags:
+    - csr_autoapprove
+    - csr_autoapprove.dependencies
+
+- name: create namespace
+  kubernetes.core.k8s:
+    name: "{{ csr_autoapprove_namespace }}"
+    api_version: v1
+    kind: Namespace
+    state: present
+  tags:
+    - csr_autoapprove
+    - csr_autoapprove.namespace
+...

@@ -1,0 +1,24 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: cluster
+    groups:
+      - k8s
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      verbosity: 1
+  inventory:
+    hosts:
+      all:
+        hosts:
+          csr-autoapprove-test-control-plane: {}
+          localhost:
+            kubeconfig: ${MOLECULE_EPHEMERAL_DIRECTORY}/kubeconfig
+verifier:
+  name: ansible
+...

@@ -1,0 +1,7 @@
+---
+- name: Update apt
+  ansible.builtin.apt:
+    update_cache: true
+  tags:
+    - always
+...

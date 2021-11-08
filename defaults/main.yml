@@ -1,0 +1,7 @@
+---
+# Cache update time for apt module.
+csr_autoapprove_cache_valid_time: 3600
+
+# Specify the kubernetes namespace to install resources to.
+csr_autoapprove_namespace: default
+...
