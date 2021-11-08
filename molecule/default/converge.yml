@@ -1,8 +1,0 @@
----
-- name: Converge
-  hosts: csr-autoapprove-test-control-plane
-  connection: docker
-  gather_facts: false
-  roles:
-    - role: gepaplexx.csr_autoapprove
-...

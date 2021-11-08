@@ -1,7 +1,4 @@
 ---
-# Cache update time for apt module.
-csr_autoapprove_cache_valid_time: 3600
-
-# Specify the kubernetes namespace to install resources to.
-csr_autoapprove_namespace: default
+openshift_mirror_url: "https://openshift.infra.gepaplexx.com"
+oc_binary_url: "{{ openshift_mirror_url }}/clients/oc/latest/linux/oc.tar.gz"
 ...
