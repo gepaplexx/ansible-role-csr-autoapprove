@@ -50,7 +50,7 @@
 - name: Wait for pending csr requests
   async_status:
     jid: "{{ csr_autoapprove_pending_csrs }}"
-  until: res_openshift.finished
+  until: csr_autoapprove_pending_csrs.finished
   delay: 30
   retries: 20
 
