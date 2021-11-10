@@ -31,6 +31,12 @@
 
 ########
 # CSR Autoapprove
+- name: Reload Netconfig for DNS
+  become: true
+  ansible.builtin.command:
+    cmd: netplan apply
+  changed_when: true
+
 - name: CSR Autoapprove
   environment:
     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
