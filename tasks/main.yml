@@ -36,8 +36,7 @@
     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
   ansible.builtin.command:
     cmd: |
-      oc get csr | grep -i pending | \
-      cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
+      oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
   changed_when: true
 
 ...
