@@ -41,8 +41,8 @@
 - name: Wait for pending csr requests
   environment:
     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
-  ansible.builtin.command:
-    cmd: oc get csr | grep -i pending | wc -l
+  ansible.builtin.shell:
+    cmd: "oc get csr | grep -i pending | wc -l"
   async: 600
   poll: 10
   register: csr_autoapprove_pending_csrs
@@ -50,7 +50,7 @@
 - name: Wait for pending csr requests
   async_status:
     jid: "{{ csr_autoapprove_pending_csrs }}"
-  until: csr_autoapprove_pending_csrs.result < 3
+  until: csr_autoapprove_pending_csrs.stdout >= 3
 
     
 
@@ -59,7 +59,7 @@
 # - name: CSR Autoapprove
 #   environment:
 #     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
-#   ansible.builtin.command:
+#   ansible.builtin.shell:
 #     cmd: |
 #       oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
 #   changed_when: true
@@ -67,7 +67,7 @@
 # - name: CSR Autoapprove
 #   environment:
 #     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
-#   ansible.builtin.command:
+#   ansible.builtin.shell:
 #     cmd: |
 #       oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
 #   changed_when: true
