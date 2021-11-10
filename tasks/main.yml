@@ -39,4 +39,5 @@
       oc get csr | grep -i pending | \
       cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
   changed_when: true
+
 ...
