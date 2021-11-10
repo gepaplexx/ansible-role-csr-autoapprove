@@ -42,15 +42,17 @@
   environment:
     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
   ansible.builtin.shell:
-    cmd: "oc get csr | grep -i pending | wc -l"
+    cmd: "while [ $(oc get csr | grep -i pending | wc -l) -lt {{csr_autoapprove_node_count}} ]; do sleep 30; done"
   async: 600
-  poll: 10
+  poll: 0
   register: csr_autoapprove_pending_csrs
 
 - name: Wait for pending csr requests
   async_status:
     jid: "{{ csr_autoapprove_pending_csrs }}"
-  until: csr_autoapprove_pending_csrs.stdout | int >= csr_autoapprove_node_count
+  until: res_openshift.finished
+  delay: 30
+  retries: 20
 
     
 
