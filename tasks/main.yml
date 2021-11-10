@@ -2,7 +2,7 @@
 ########
 # install oc
 - name: Download oc client
-  get_url: 
+  ansible.builtin.get_url: 
     url: "{{ oc_binary_url }}"
     dest: /tmp/oc.tar.gz
     mode: '0777'
@@ -14,17 +14,17 @@
   ansible.builtin.unarchive:
     src: /tmp/oc.tar.gz
     dest: /tmp/
-    remote_src: yes
+    remote_src: true
   tags:
     - bastion
     - bastion.oc
 
 - name: Copy oc binary to /usr/local/bin
-  copy:
+  ansible.builtin.copy:
     src: /tmp/oc
     dest: /usr/local/bin/oc
     mode: "0777"
-    remote_src: yes
+    remote_src: true
   tags:
     - bastion
     - bastion.oc
