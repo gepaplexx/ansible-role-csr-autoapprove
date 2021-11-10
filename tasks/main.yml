@@ -49,7 +49,7 @@
 
 - name: Wait for pending csr requests
   async_status:
-    jid: "{{ csr_autoapprove_pending_csrs }}"
+    jid: "{{ csr_autoapprove_pending_csrs.ansible_job_id }}"
   register: csr_autoapprove_pending_csrs_status
   until: csr_autoapprove_pending_csrs_status.finished
   delay: 30
