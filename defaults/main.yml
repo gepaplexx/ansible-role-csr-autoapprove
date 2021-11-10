@@ -1,4 +1,5 @@
 ---
+# skip_ansible_lint
 openshift_mirror_url: "https://openshift.infra.gepaplexx.com"
-oc_binary_url: "{{ openshift_mirror_url }}/clients/oc/latest/linux/oc.tar.gz"
+csr_autoapprove_oc_binary_url: "{{ openshift_mirror_url }}/clients/oc/latest/linux/oc.tar.gz"
 ...

@@ -2,8 +2,8 @@
 ########
 # install oc
 - name: Download oc client
-  ansible.builtin.get_url: 
-    url: "{{ oc_binary_url }}"
+  ansible.builtin.get_url:
+    url: "{{ csr_autoapprove_oc_binary_url }}"
     dest: /tmp/oc.tar.gz
     mode: '0777'
   tags:
@@ -35,5 +35,8 @@
   environment:
     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
   ansible.builtin.command:
-    cmd: "oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve"
+    cmd: |
+      oc get csr | grep -i pending | \
+      cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
+  changed_when: true
 ...
