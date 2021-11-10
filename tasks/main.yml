@@ -39,6 +39,8 @@
 # Wait for pending csrs
 
 - name: Wait for pending csr requests
+  environment:
+    KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
   ansible.builtin.command:
     cmd: oc get csr | grep -i pending | wc -l
   async: 600
