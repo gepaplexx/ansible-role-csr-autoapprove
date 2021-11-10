@@ -38,5 +38,16 @@
     cmd: |
       oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
   changed_when: true
-
+  
+- name: Pause for 2 minutes to wait for workers to appear
+  pause:
+    minutes: 2
+    
+- name: CSR Autoapprove
+  environment:
+    KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
+  ansible.builtin.command:
+    cmd: |
+      oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
+  changed_when: true
 ...
