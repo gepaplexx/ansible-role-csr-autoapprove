@@ -29,31 +29,44 @@
     - bastion
     - bastion.oc
 
-########
-# CSR Autoapprove
 - name: Reload Netconfig for DNS
   become: true
   ansible.builtin.command:
     cmd: netplan apply
   changed_when: true
 
-- name: CSR Autoapprove
-  environment:
-    KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
+########
+# Wait for pending csrs
+
+- name: Wait for pending csr requests
   ansible.builtin.command:
-    cmd: |
-      oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
-  changed_when: true
-  
-- name: Pause for 2 minutes to wait for workers to appear
-  pause:
-    minutes: 2
+    cmd: oc get csr | grep -i pending | wc -l
+  async: 600
+  poll: 10
+  register: csr_autoapprove_pending_csrs
+
+- name: Wait for pending csr requests
+  async_status:
+    jid: "{{ csr_autoapprove_pending_csrs }}"
+  until: csr_autoapprove_pending_csrs.result < 3
+
     
-- name: CSR Autoapprove
-  environment:
-    KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
-  ansible.builtin.command:
-    cmd: |
-      oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
-  changed_when: true
+
+########
+# CSR Autoapprove
+# - name: CSR Autoapprove
+#   environment:
+#     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
+#   ansible.builtin.command:
+#     cmd: |
+#       oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
+#   changed_when: true
+    
+# - name: CSR Autoapprove
+#   environment:
+#     KUBECONFIG: /home/ansible/openshift/config/auth/kubeconfig
+#   ansible.builtin.command:
+#     cmd: |
+#       oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
+#   changed_when: true
 ...
