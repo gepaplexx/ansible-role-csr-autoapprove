@@ -6,7 +6,7 @@
     cmd: |
       while [ $(oc get csr | grep -i pending | wc -l) \
         -lt {{ csr_autoapprove_node_count }} ]
-      do 
+      do
         sleep 30
       done
   async: 600
@@ -24,7 +24,7 @@
 
 - name: CSR Autoapprove
   environment:
-    KUBECONFIG: "{{ocp_kubeconfig_file}}"
+    KUBECONFIG: "{{ ocp_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
       oc get csr | grep -i pending | cut -f 1 -d ' ' | \
