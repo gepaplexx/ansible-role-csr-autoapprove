@@ -1,15 +1,21 @@
 ---
 - name: Create async csr waiting job
   environment:
-    KUBECONFIG: "{{ocp_kubeconfig_file}}"
+    KUBECONFIG: "{{ ocp_kubeconfig_file }}"
   ansible.builtin.shell:
-    cmd: "while [ $(oc get csr | grep -i pending | wc -l) -lt {{csr_autoapprove_node_count}} ]; do sleep 30; done"
+    cmd: |
+      while [ $(oc get csr | grep -i pending | wc -l) \
+        -lt {{ csr_autoapprove_node_count }} ]
+      do 
+        sleep 30
+      done
   async: 600
   poll: 0
   register: csr_autoapprove_pending_csrs
+  changed_when: true
 
 - name: Wait for pending csr requests
-  async_status:
+  ansible.builtin.async_status:
     jid: "{{ csr_autoapprove_pending_csrs.ansible_job_id }}"
   register: csr_autoapprove_pending_csrs_status
   until: csr_autoapprove_pending_csrs_status.finished
@@ -21,6 +27,7 @@
     KUBECONFIG: "{{ocp_kubeconfig_file}}"
   ansible.builtin.shell:
     cmd: |
-      oc get csr | grep -i pending | cut -f 1 -d ' ' | xargs -n 1 oc adm certificate approve
+      oc get csr | grep -i pending | cut -f 1 -d ' ' | \
+      xargs -n 1 oc adm certificate approve
   changed_when: true
 ...
