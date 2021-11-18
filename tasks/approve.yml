@@ -1,14 +1,31 @@
 ---
-- name: Create async csr waiting job
+- name: Create async csr approvial job
   environment:
     KUBECONFIG: "{{ ocp_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
-      while [ $(oc get csr | grep -i pending | wc -l) \
-        -lt {{ csr_autoapprove_node_count }} ]
-      do
-        sleep 30
+      NODES_ACCEPTED=0
+
+      # do this until all nodes are added
+      while [ "${NODES_ACCEPTED}" -lt $(( 3 * 2 )) ]; do
+        PENDING=""
+        PENDING_COUNT=0
+
+        # wait for at least one node to be pending
+        while [ "${PENDING_COUNT}" -le 0 ]; do
+          echo "wait for pending csr"
+          PENDING=$(oc get csr | grep -i pending | cut -f 1 -d ' ')
+          PENDING_COUNT=$(echo -n "${PENDING}" | wc -l)
+          sleep 10
+        done
+
+        # accept pending nodes, increase nodes_accepted counter
+        echo "accepting ${PENDING_COUNT} csr"
+        echo -n "${PENDING}" | xargs -n 1 oc adm certificate approve
+        NODES_ACCEPTED=$((NODES_ACCEPTED + PENDING_COUNT))
+        echo "accepted ${NODES_ACCEPTED} requests so far"
       done
+
   async: 600
   poll: 0
   register: csr_autoapprove_pending_csrs
@@ -21,13 +38,4 @@
   until: csr_autoapprove_pending_csrs_status.finished
   delay: 30
   retries: 20
-
-- name: CSR Autoapprove
-  environment:
-    KUBECONFIG: "{{ ocp_kubeconfig_file }}"
-  ansible.builtin.shell:
-    cmd: |
-      oc get csr | grep -i pending | cut -f 1 -d ' ' | \
-      xargs -n 1 oc adm certificate approve
-  changed_when: true
 ...
