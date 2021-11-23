@@ -16,13 +16,13 @@
         while [ "${PENDING_COUNT}" -le 0 ]; do
           echo "wait for pending csr"
           PENDING=$(oc get csr | grep -i pending | cut -f 1 -d ' ')
-          PENDING_COUNT=$(echo "${PENDING}" | wc -l)
+          PENDING_COUNT=$(echo $PENDING | grep -i csr | wc -l)
           sleep 10
         done
 
         # accept pending nodes, increase nodes_accepted counter
         echo "accepting ${PENDING_COUNT} csr"
-        echo -n "${PENDING}" | xargs -n 1 oc adm certificate approve
+        echo "${PENDING}" | xargs -n 1 oc adm certificate approve
         NODES_ACCEPTED=$((NODES_ACCEPTED + PENDING_COUNT))
         echo "accepted ${NODES_ACCEPTED} requests so far"
       done
