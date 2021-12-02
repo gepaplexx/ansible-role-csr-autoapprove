@@ -12,7 +12,7 @@ $(( "${NODES_COUNT}" * 2 )) ]; do
   while [ "${PENDING_COUNT}" -le 0 ]; do
     echo "wait for pending csr"
     PENDING=$(oc get csr | grep -i pending | cut -f 1 -d ' ')
-    PENDING_COUNT=$(echo $PENDING | wc -w)
+    PENDING_COUNT=$(echo "$PENDING" | wc -w)
     sleep 10
   done
 

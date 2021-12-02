@@ -1,7 +1,7 @@
 ---
 - name: Create async csr approvial job
   environment:
-    KUBECONFIG: "{{ ocp_kubeconfig_file }}"
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
     NODES_COUNT: "{{ csr_autoapprove_node_count }}"
   ansible.builtin.script:
     cmd: /files/approve.sh
