@@ -9,7 +9,7 @@
 
       # do this until all nodes are added
       while [ "${NODES_ACCEPTED}" -lt \
-      $(( "${NODES_COUNT}" * 2 )) ]; do
+      $(( ${NODES_COUNT} * 2 )) ]; do
         PENDING=""
         PENDING_COUNT=0
 
