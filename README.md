@@ -1,9 +1,9 @@
 # Ansible Role: csr_autoapprove
 
 ![MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/racqspace/ansible-role-csr_autoapprove/Main?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/racqspace/ansible-role-csr_autoapprove?style=flat-square)
-![GitHub Release Date](https://img.shields.io/github/release-date/racqspace/ansible-role-csr_autoapprove?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/gepaplexx/ansible-role-csr-autoapprovee/Main?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/gepaplexx/ansible-role-csr-autoapprove?style=flat-square)
+![GitHub Release Date](https://img.shields.io/github/release-date/gepaplexx/ansible-role-csr-autoapprove?style=flat-square)
 ![Maintenance](https://img.shields.io/maintenance/yes/2022?style=flat-square)
 
 Automatically approving CSR from new openshift nodes. Also installing oc if not present.
