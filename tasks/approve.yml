@@ -1,8 +1,12 @@
 ---
+- name: Get total number of current nodes
+  command: "kubectl get nodes --no-headers --kubeconfig {{ openshift_kubeconfig_file }} | wc -l"
+  register: current_nodes
+
 - name: Create async csr approvial job
   environment:
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
-    NODES_COUNT: "{{ csr_autoapprove_node_count }}"
+    NODES_COUNT: "{{ current_nodes - ocp_master_count - csr_autoapprove_node_count }}
   ansible.builtin.shell:
     cmd: |
       NODES_ACCEPTED=0
