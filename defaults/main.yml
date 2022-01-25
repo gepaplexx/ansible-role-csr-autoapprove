@@ -1,7 +1,4 @@
 ---
-# skip_ansible_lint
-openshift_mirror_url: "https://openshift.infra.gepaplexx.com"
-# skip_ansible_lint
 openshift_kubeconfig_file: /home/ansible/openshift/config/auth/kubeconfig
 
 csr_autoapprove_oc_binary_url: |

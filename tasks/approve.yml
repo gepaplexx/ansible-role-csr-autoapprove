@@ -1,9 +1,9 @@
 ---
 - name: Get total number of current nodes
-  # skip_yaml_lint
-  ansible.builtin.command: |
-    kubectl get nodes --no-headers \
-      --kubeconfig {{ openshift_kubeconfig_file }} | wc -l
+  environment:
+    CONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell: |
+    kubectl get nodes --no-headers --kubeconfig ${CONFIG} | wc -l
   register: csr_autoapprove_current_nodes
   changed_when: false
 
