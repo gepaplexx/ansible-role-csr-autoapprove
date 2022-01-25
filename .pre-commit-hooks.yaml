@@ -18,9 +18,4 @@
     # version of Ansible you want to install as a dependency.
     - .[community,yamllint]
 
-- id: yamllint
-  entry: yamllint --strict
-  files: \.(yaml|yml)$
-  language: python
-  types: [file, yaml]
 ...
