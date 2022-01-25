@@ -5,7 +5,7 @@
   ansible.builtin.shell:
     cmd: |
       set -o pipefail
-      
+
       kubectl get nodes --no-headers --kubeconfig ${CONFIG} | wc -l
   register: csr_autoapprove_current_nodes
   changed_when: false
