@@ -12,7 +12,7 @@
   environment:
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
     NODES_COUNT: "{{ ocp_worker_count + ocp_infra_count
-      + ocp_master_count - csr_autoapprove_current_nodes.stdout }}"
+      + ocp_master_count - int(csr_autoapprove_current_nodes.stdout) }}"
   ansible.builtin.shell:
     cmd: |
       NODES_ACCEPTED=0
