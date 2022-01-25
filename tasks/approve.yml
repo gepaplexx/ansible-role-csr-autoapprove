@@ -2,9 +2,11 @@
 - name: Get total number of current nodes
   environment:
     CONFIG: "{{ openshift_kubeconfig_file }}"
-  ansible.builtin.shell: |
-    set -o pipefail
-    kubectl get nodes --no-headers --kubeconfig ${CONFIG} | wc -l
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      
+      kubectl get nodes --no-headers --kubeconfig ${CONFIG} | wc -l
   register: csr_autoapprove_current_nodes
   changed_when: false
 
