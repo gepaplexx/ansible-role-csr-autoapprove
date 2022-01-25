@@ -12,11 +12,11 @@
   environment:
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
     WANTED_NODES: "{{ ocp_worker_count + ocp_infra_count + ocp_master_count }}"
-    CURRENT_NODES: "{{ csr_autoapprove_current_nodes.stdout | int }}"
+    CURRENT_NODES: "{{ csr_autoapprove_current_nodes.stdout }}"
   ansible.builtin.shell:
     cmd: |
       NODES_ACCEPTED=0
-      NODES_COUNT=${WANTED_NODES}-${CURRENT_NODES}
+      NODES_COUNT=$(($WANTED_NODES - $CURRENT_NODES))
 
       # do this until all nodes are added
       while [ "${NODES_ACCEPTED}" -lt \
